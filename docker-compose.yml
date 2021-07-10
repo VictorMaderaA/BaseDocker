@@ -4,7 +4,7 @@ networks:
   laravel:
 
 volumes:
-  def_databaseVol:
+  defdock_databaseVol:
 #    external: true
 
 services:
@@ -12,7 +12,7 @@ services:
     build:
       context: ./etc/dev
       dockerfile: nginx.dockerfile
-    container_name: def_nginx
+    container_name: defdock_nginx
     ports:
       - "8080:80"
     volumes:
@@ -26,13 +26,13 @@ services:
 
   mysql:
     image: mysql:8.0.21
-    container_name: def_mysql
+    container_name: defdock_mysql
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
     volumes:
-      - def_databaseVol:/var/lib/mysql
+      - defdock_databaseVol:/var/lib/mysql
     environment:
       MYSQL_DATABASE: homestead
       MYSQL_USER: homestead
@@ -45,14 +45,14 @@ services:
 
   mariadb:
     image: mariadb:10.5.10
-    container_name: def_mariadb
+    container_name: defdock_mariadb
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
     command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
-      - def_databaseVol:/var/lib/mysql
+      - defdock_databaseVol:/var/lib/mysql
     environment:
       MYSQL_DATABASE: homestead
       MYSQL_USER: homestead
@@ -67,7 +67,7 @@ services:
     build:
       context: ./etc/dev
       dockerfile: php.dockerfile
-    container_name: def_php
+    container_name: defdock_php
     volumes:
       - ./src:/var/www/html:delegated
     ports:
@@ -79,7 +79,7 @@ services:
     build:
       context: ./etc/dev
       dockerfile: composer.dockerfile
-    container_name: def_composer
+    container_name: defdock_composer
     volumes:
       - ./src:/var/www/html
     working_dir: /var/www/html
@@ -92,7 +92,7 @@ services:
 
   npm:
     image: node:13.7
-    container_name: def_npm
+    container_name: defdock_npm
     volumes:
       - ./src:/var/www/html
     working_dir: /var/www/html
@@ -100,9 +100,9 @@ services:
 
   artisan:
     build:
-      context: .
+      context: ./etc/dev
       dockerfile: php.dockerfile
-    container_name: def_artisan
+    container_name: defdock_artisan
     volumes:
       - ./src:/var/www/html:delegated
     depends_on:
